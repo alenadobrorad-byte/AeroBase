@@ -36,6 +36,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
             Name = "Form1";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "AeroBase - учет БПЛА";
             ResumeLayout(false);
         }
