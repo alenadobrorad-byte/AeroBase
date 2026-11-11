@@ -54,13 +54,11 @@
             lblMaintainTitle = new Label();
             btnChange = new Button();
             btnChange2 = new Button();
-            dgvParts = new DataGridView();
             panelSidebar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvDrones).BeginInit();
             panelStats.SuspendLayout();
             panelReady.SuspendLayout();
             panelMaintenance.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvParts).BeginInit();
             SuspendLayout();
             // 
             // panelSidebar
@@ -210,7 +208,7 @@
             btnAddDrone.BackColor = Color.RoyalBlue;
             btnAddDrone.FlatStyle = FlatStyle.Flat;
             btnAddDrone.ForeColor = Color.White;
-            btnAddDrone.Location = new Point(819, 25);
+            btnAddDrone.Location = new Point(800, 185);
             btnAddDrone.Name = "btnAddDrone";
             btnAddDrone.Size = new Size(140, 40);
             btnAddDrone.TabIndex = 3;
@@ -323,40 +321,32 @@
             // 
             btnChange.BackColor = SystemColors.ActiveCaption;
             btnChange.ForeColor = SystemColors.HighlightText;
-            btnChange.Location = new Point(262, 639);
+            btnChange.Location = new Point(257, 616);
             btnChange.Name = "btnChange";
-            btnChange.Size = new Size(100, 35);
+            btnChange.Size = new Size(122, 35);
             btnChange.TabIndex = 7;
             btnChange.Text = "Изменить";
             btnChange.UseVisualStyleBackColor = false;
+            btnChange.Click += btnChange_Click;
             // 
             // btnChange2
             // 
             btnChange2.BackColor = Color.IndianRed;
-            btnChange2.Location = new Point(399, 639);
+            btnChange2.Location = new Point(393, 616);
             btnChange2.Name = "btnChange2";
-            btnChange2.Size = new Size(100, 35);
+            btnChange2.Size = new Size(122, 35);
             btnChange2.TabIndex = 8;
             btnChange2.Text = "Удалить";
             btnChange2.UseMnemonic = false;
             btnChange2.UseVisualStyleBackColor = false;
-            // 
-            // dgvParts
-            // 
-            dgvParts.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvParts.Location = new Point(963, 260);
-            dgvParts.Name = "dgvParts";
-            dgvParts.Size = new Size(348, 350);
-            dgvParts.TabIndex = 9;
-            dgvParts.CellContentClick += dataGridView1_CellContentClick;
+            btnChange2.Click += btnChange2_Click;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(240, 247, 251);
-            ClientSize = new Size(1337, 711);
-            Controls.Add(dgvParts);
+            ClientSize = new Size(1013, 711);
             Controls.Add(btnChange2);
             Controls.Add(btnChange);
             Controls.Add(panelMaintenance);
@@ -379,7 +369,6 @@
             panelReady.PerformLayout();
             panelMaintenance.ResumeLayout(false);
             panelMaintenance.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvParts).EndInit();
             ResumeLayout(false);
         }
 
@@ -412,6 +401,5 @@
 
         private Button btnChange;
         private TextBox textBox1;
-        private DataGridView dgvParts;
     }
 }

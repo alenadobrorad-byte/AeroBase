@@ -22,7 +22,13 @@ namespace AeroBase
             btnSave.Click += btnSave_Click;
             btnCancel.Click += btnCancel_Click;
         }
-
+        public void SetDroneData(AeroBase.Models.Drone drone)
+        {
+            txtDroneName.Text = drone.Name;
+            txtInventoryNumber.Text = drone.InventoryNumber;
+            txtDroneType.Text = drone.Type;
+            txtDroneStatus.Text = drone.Status;
+        }
         private void btnSave_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtDroneName.Text) ||
