@@ -54,11 +54,13 @@
             lblMaintainTitle = new Label();
             btnChange = new Button();
             btnChange2 = new Button();
+            dgvParts = new DataGridView();
             panelSidebar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvDrones).BeginInit();
             panelStats.SuspendLayout();
             panelReady.SuspendLayout();
             panelMaintenance.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvParts).BeginInit();
             SuspendLayout();
             // 
             // panelSidebar
@@ -339,12 +341,22 @@
             btnChange2.UseMnemonic = false;
             btnChange2.UseVisualStyleBackColor = false;
             // 
+            // dgvParts
+            // 
+            dgvParts.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvParts.Location = new Point(963, 260);
+            dgvParts.Name = "dgvParts";
+            dgvParts.Size = new Size(348, 350);
+            dgvParts.TabIndex = 9;
+            dgvParts.CellContentClick += dataGridView1_CellContentClick;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(240, 247, 251);
-            ClientSize = new Size(1184, 711);
+            ClientSize = new Size(1337, 711);
+            Controls.Add(dgvParts);
             Controls.Add(btnChange2);
             Controls.Add(btnChange);
             Controls.Add(panelMaintenance);
@@ -367,6 +379,7 @@
             panelReady.PerformLayout();
             panelMaintenance.ResumeLayout(false);
             panelMaintenance.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvParts).EndInit();
             ResumeLayout(false);
         }
 
@@ -399,5 +412,6 @@
 
         private Button btnChange;
         private TextBox textBox1;
+        private DataGridView dgvParts;
     }
 }
