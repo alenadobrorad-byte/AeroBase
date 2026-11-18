@@ -3,13 +3,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using Npgsql;
 
 
 namespace AeroBase
 {
     public partial class MainForm : Form
     {
+        private readonly string connectionString =
+    "Host=localhost;Port=5432;Database=aerobase;Username=postgres;" +
+    "Password=" + Environment.GetEnvironmentVariable("AEROBASE_DB_PASSWORD");
         private List<Drone> drones = new List<Drone>();
+        private DroneRepository repository;
         
 private List<Part> parts = new List<Part>()
 {
@@ -30,7 +35,18 @@ private Button? btnDeletePart;
         public MainForm()
         {
             InitializeComponent();
-            InitData();
+
+repository = new DroneRepository(connectionString);
+
+try
+{
+    drones = repository.GetAll();
+    ShowDrones();
+}
+catch (Exception ex)
+{
+    MessageBox.Show("Ошибка загрузки БПЛА: " + ex.Message);
+}
 
             dgvDrones.AllowUserToAddRows = false;
 
@@ -51,6 +67,23 @@ btnDRONES.Click += (s, e) => ShowDronesPage();
     }
 
         
+private void TestDatabaseConnection()
+{
+    try
+    {
+        using (NpgsqlConnection connection =
+            new NpgsqlConnection(connectionString))
+        {
+            connection.Open();
+            MessageBox.Show("Подключение к PostgreSQL успешно!");
+        }
+    }
+    catch (Exception ex)
+    {
+        MessageBox.Show("Ошибка подключения: " + ex.Message);
+    }
+}
+
 
 private void CreateDroneSearch()
 {
@@ -472,26 +505,43 @@ if (btnDeletePart != null) btnDeletePart.Visible = false;
         {
         }
 
-        private void btnAddDrone_Click(
-        object sender, EventArgs e)
+       
+private void btnAddDrone_Click(object sender, EventArgs e)
+{
+    using (AddDroneForm form = new AddDroneForm())
+    {
+        if (form.ShowDialog() == DialogResult.OK)
         {
-            using (AddDroneForm form = new AddDroneForm())
+            Drone newDrone = new Drone(
+                0,
+                form.DroneName,
+                form.DroneName,
+                form.Dronetype,
+                form.InventoryNumber,
+                form.DroneStatus
+            );
+
+            try
             {
-                if (form.ShowDialog() == DialogResult.OK)
-                {
-                    drones.Add(new Drone(
-                     nextDroneId++,
-                     form.DroneName,
-                     form.DroneName,
-                     form.InventoryNumber,
-                     form.Dronetype,
-                     form.DroneStatus
-                     ));
-                    ShowDrones();
-                    UpdateStats();
-                }
+                repository.Add(newDrone);
+
+                drones = repository.GetAll();
+                ShowDrones();
+                UpdateStats();
+
+                MessageBox.Show("БПЛА успешно добавлен!");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Ошибка добавления БПЛА: " + ex.Message
+                );
             }
         }
+    }
+}
+
+        
         private void InitData()
         {
             drones.Add(new Drone(1, "DJI Mavic 3", "DJI Mavic 3", "Квадрокоптер", "006", "Исправен"));
@@ -554,9 +604,28 @@ private void ShowDrones()
                 ("Удалить дрон" + selectedDrone.Name + "?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (result == DialogResult.Yes)
             {
-                drones.Remove(selectedDrone);
-                ShowDrones();
-                UpdateStats();
+                
+try
+{
+    bool deleted = repository.Delete(selectedDrone.Id);
+
+    if (!deleted)
+    {
+        MessageBox.Show("БПЛА уже отсутствует в базе данных.");
+        return;
+    }
+
+    drones = repository.GetAll();
+    ShowDrones();
+    UpdateStats();
+
+    MessageBox.Show("БПЛА успешно удалён!");
+}
+catch (Exception ex)
+{
+    MessageBox.Show("Ошибка удаления БПЛА: " + ex.Message);
+}
+
 
                 MessageBox.Show("Дрон успешно удален!");
             }
